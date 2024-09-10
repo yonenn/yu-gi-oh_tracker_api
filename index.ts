@@ -18,6 +18,8 @@ var schema = buildSchema(`
 
   type Mutation {
     insertBattleLog(input: TBattleLogInput!): TBattleLog
+    updateBattleLog(input: TBattleLogInput!): TBattleLog
+    deleteBattleLog(logId: Int!): Int
   }
 
   type TBattleLog {
@@ -56,6 +58,12 @@ var root = {
   },
   insertBattleLog({ input }: { input: TBattleLog }) {
     return TBattleLogMapper.insert(input);
+  },
+  updateBattleLog({ input }: { input: TBattleLog }) {
+    return TBattleLogMapper.update(input);
+  },
+  deleteBattleLog({ logId }: { logId: number }) {
+    return TBattleLogMapper.delete(logId);
   },
 };
 

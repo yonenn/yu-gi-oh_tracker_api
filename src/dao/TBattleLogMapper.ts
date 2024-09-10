@@ -23,7 +23,7 @@ export const TBattleLogMapper = {
     });
   },
 
-  /** PKから１レコード取得 */
+  /** レコード取得 */
   selectByPK: (id: number): TBattleLog => {
     const result: any = db
       .prepare("select * from T_BATTLE_LOG where LOG_ID = ?")
@@ -58,5 +58,32 @@ export const TBattleLogMapper = {
         input.rank
       );
     return { ...input, logId: result.lastInsertRowid as number };
+  },
+
+  /** レコード更新 */
+  update: (input: TBattleLog): TBattleLog => {
+    const result = db
+      .prepare(
+        "update T_BATTLE_LOG set BATTLE_DATE = ?, SEASON = ?, MY_DECK = ?, OPPOSITE_DECK = ?, COIN_TOSS = ?, WIN_LOSE = ?, RANK = ?  where LOG_ID = ?"
+      )
+      .run(
+        input.battleDate,
+        input.season,
+        input.myDeck,
+        input.oppositeDeck,
+        input.coinToss,
+        input.winLose,
+        input.rank,
+        input.logId
+      );
+    return { ...input };
+  },
+
+  /** レコードを削除 */
+  delete: (id: number): number => {
+    const result = db
+      .prepare("delete from T_BATTLE_LOG where LOG_ID = ?")
+      .run(id);
+    return result.changes;
   },
 };
