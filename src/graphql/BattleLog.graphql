@@ -1,0 +1,30 @@
+type Query {
+  battleLog(logId: Int!): TBattleLog
+  battleLogs: [TBattleLog]
+}
+
+type Mutation {
+  insertBattleLog(input: TBattleLogInput!): TBattleLog
+}
+
+type TBattleLog {
+  logId: Int
+  battleDate: String
+  season: String
+  myDeck: Int
+  oppositeDeck: Int
+  coinToss: String
+  winLose: String
+  rank: Int
+}
+
+input TBattleLogInput {
+  logId: Int
+  battleDate: String
+  season: String
+  myDeck: Int
+  oppositeDeck: Int
+  coinToss: String
+  winLose: String
+  rank: Int
+}
