@@ -1,13 +1,13 @@
 import Database from "better-sqlite3";
 import { DB_FILE_DIR } from "../util/dbConfig";
-import { TBattleLog } from "../types/generated/graphql";
+import { TDuelLog } from "../types/generated/graphql";
 
 const db = new Database(DB_FILE_DIR);
 
-export const TBattleLogMapper = {
+export const TDuelLogMapper = {
   /** 全件取得 */
-  selectAll: (): TBattleLog[] => {
-    const result = db.prepare("select * from T_BATTLE_LOG").all();
+  selectAll: (): TDuelLog[] => {
+    const result = db.prepare("select * from T_DUEL_LOG").all();
 
     return result.map((row: any) => {
       return {
@@ -24,12 +24,12 @@ export const TBattleLogMapper = {
   },
 
   /** レコード取得 */
-  selectByPK: (id: number): TBattleLog => {
+  selectByPK: (id: number): TDuelLog => {
     const result: any = db
-      .prepare("select * from T_BATTLE_LOG where LOG_ID = ?")
+      .prepare("select * from T_DUEL_LOG where LOG_ID = ?")
       .get(id);
 
-    const response: TBattleLog = {
+    const response: TDuelLog = {
       logId: result.LOG_ID,
       battleDate: result.BATTLE_DATE,
       season: result.SEASON,
@@ -44,9 +44,9 @@ export const TBattleLogMapper = {
   },
 
   /** レコード追加 */
-  insert: (input: TBattleLog): TBattleLog => {
+  insert: (input: TDuelLog): TDuelLog => {
     const result = db
-      .prepare("insert into T_BATTLE_LOG values(?, ?, ?, ?, ?, ?, ?, ?)")
+      .prepare("insert into T_DUEL_LOG values(?, ?, ?, ?, ?, ?, ?, ?)")
       .run(
         null,
         input.battleDate,
@@ -61,10 +61,10 @@ export const TBattleLogMapper = {
   },
 
   /** レコード更新 */
-  update: (input: TBattleLog): TBattleLog => {
+  update: (input: TDuelLog): TDuelLog => {
     const result = db
       .prepare(
-        "update T_BATTLE_LOG set BATTLE_DATE = ?, SEASON = ?, MY_DECK = ?, OPPOSITE_DECK = ?, COIN_TOSS = ?, WIN_LOSE = ?, RANK = ?  where LOG_ID = ?"
+        "update T_DUEL_LOG set BATTLE_DATE = ?, SEASON = ?, MY_DECK = ?, OPPOSITE_DECK = ?, COIN_TOSS = ?, WIN_LOSE = ?, RANK = ?  where LOG_ID = ?"
       )
       .run(
         input.battleDate,
@@ -82,7 +82,7 @@ export const TBattleLogMapper = {
   /** レコードを削除 */
   delete: (id: number): number => {
     const result = db
-      .prepare("delete from T_BATTLE_LOG where LOG_ID = ?")
+      .prepare("delete from T_DUEL_LOG where LOG_ID = ?")
       .run(id);
     return result.changes;
   },

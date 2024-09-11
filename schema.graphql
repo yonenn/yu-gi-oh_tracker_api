@@ -1,15 +1,15 @@
 type Query {
-  battleLog(logId: Int!): TBattleLog
-  battleLogs: [TBattleLog]
+  getDuelLog(logId: Int!): TDuelLog
+  getDuelLogs: [TDuelLog]
 }
 
 type Mutation {
-  insertBattleLog(input: TBattleLogInput!): TBattleLog
-  updateBattleLog(input: TBattleLogInput!): TBattleLog
-  deleteBattleLog(logId: Int!): Int
+  insertDuelLog(input: TDuelLogInput!): TDuelLog
+  updateDuelLog(input: TDuelLogInput!): TDuelLog
+  deleteDuelLog(logId: Int!): Int
 }
 
-type TBattleLog {
+type TDuelLog {
   logId: Int
   battleDate: String
   season: String
@@ -20,7 +20,7 @@ type TBattleLog {
   rank: Int
 }
 
-input TBattleLogInput {
+input TDuelLogInput {
   logId: Int
   battleDate: String
   season: String

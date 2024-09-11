@@ -19,39 +19,39 @@ export type Scalars = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  deleteBattleLog?: Maybe<Scalars['Int']['output']>;
-  insertBattleLog?: Maybe<TBattleLog>;
-  updateBattleLog?: Maybe<TBattleLog>;
+  deleteDuelLog?: Maybe<Scalars['Int']['output']>;
+  insertDuelLog?: Maybe<TDuelLog>;
+  updateDuelLog?: Maybe<TDuelLog>;
 };
 
 
-export type MutationDeleteBattleLogArgs = {
+export type MutationDeleteDuelLogArgs = {
   logId: Scalars['Int']['input'];
 };
 
 
-export type MutationInsertBattleLogArgs = {
-  input: TBattleLogInput;
+export type MutationInsertDuelLogArgs = {
+  input: TDuelLogInput;
 };
 
 
-export type MutationUpdateBattleLogArgs = {
-  input: TBattleLogInput;
+export type MutationUpdateDuelLogArgs = {
+  input: TDuelLogInput;
 };
 
 export type Query = {
   __typename?: 'Query';
-  battleLog?: Maybe<TBattleLog>;
-  battleLogs?: Maybe<Array<Maybe<TBattleLog>>>;
+  getDuelLog?: Maybe<TDuelLog>;
+  getDuelLogs?: Maybe<Array<Maybe<TDuelLog>>>;
 };
 
 
-export type QueryBattleLogArgs = {
+export type QueryGetDuelLogArgs = {
   logId: Scalars['Int']['input'];
 };
 
-export type TBattleLog = {
-  __typename?: 'TBattleLog';
+export type TDuelLog = {
+  __typename?: 'TDuelLog';
   battleDate?: Maybe<Scalars['String']['output']>;
   coinToss?: Maybe<Scalars['String']['output']>;
   logId?: Maybe<Scalars['Int']['output']>;
@@ -62,7 +62,7 @@ export type TBattleLog = {
   winLose?: Maybe<Scalars['String']['output']>;
 };
 
-export type TBattleLogInput = {
+export type TDuelLogInput = {
   battleDate?: InputMaybe<Scalars['String']['input']>;
   coinToss?: InputMaybe<Scalars['String']['input']>;
   logId?: InputMaybe<Scalars['Int']['input']>;
@@ -150,8 +150,8 @@ export type ResolversTypes = ResolversObject<{
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
-  TBattleLog: ResolverTypeWrapper<TBattleLog>;
-  TBattleLogInput: TBattleLogInput;
+  TDuelLog: ResolverTypeWrapper<TDuelLog>;
+  TDuelLogInput: TDuelLogInput;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -161,22 +161,22 @@ export type ResolversParentTypes = ResolversObject<{
   Mutation: {};
   Query: {};
   String: Scalars['String']['output'];
-  TBattleLog: TBattleLog;
-  TBattleLogInput: TBattleLogInput;
+  TDuelLog: TDuelLog;
+  TDuelLogInput: TDuelLogInput;
 }>;
 
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  deleteBattleLog?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationDeleteBattleLogArgs, 'logId'>>;
-  insertBattleLog?: Resolver<Maybe<ResolversTypes['TBattleLog']>, ParentType, ContextType, RequireFields<MutationInsertBattleLogArgs, 'input'>>;
-  updateBattleLog?: Resolver<Maybe<ResolversTypes['TBattleLog']>, ParentType, ContextType, RequireFields<MutationUpdateBattleLogArgs, 'input'>>;
+  deleteDuelLog?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationDeleteDuelLogArgs, 'logId'>>;
+  insertDuelLog?: Resolver<Maybe<ResolversTypes['TDuelLog']>, ParentType, ContextType, RequireFields<MutationInsertDuelLogArgs, 'input'>>;
+  updateDuelLog?: Resolver<Maybe<ResolversTypes['TDuelLog']>, ParentType, ContextType, RequireFields<MutationUpdateDuelLogArgs, 'input'>>;
 }>;
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  battleLog?: Resolver<Maybe<ResolversTypes['TBattleLog']>, ParentType, ContextType, RequireFields<QueryBattleLogArgs, 'logId'>>;
-  battleLogs?: Resolver<Maybe<Array<Maybe<ResolversTypes['TBattleLog']>>>, ParentType, ContextType>;
+  getDuelLog?: Resolver<Maybe<ResolversTypes['TDuelLog']>, ParentType, ContextType, RequireFields<QueryGetDuelLogArgs, 'logId'>>;
+  getDuelLogs?: Resolver<Maybe<Array<Maybe<ResolversTypes['TDuelLog']>>>, ParentType, ContextType>;
 }>;
 
-export type TBattleLogResolvers<ContextType = Context, ParentType extends ResolversParentTypes['TBattleLog'] = ResolversParentTypes['TBattleLog']> = ResolversObject<{
+export type TDuelLogResolvers<ContextType = Context, ParentType extends ResolversParentTypes['TDuelLog'] = ResolversParentTypes['TDuelLog']> = ResolversObject<{
   battleDate?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   coinToss?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   logId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
@@ -191,6 +191,6 @@ export type TBattleLogResolvers<ContextType = Context, ParentType extends Resolv
 export type Resolvers<ContextType = Context> = ResolversObject<{
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
-  TBattleLog?: TBattleLogResolvers<ContextType>;
+  TDuelLog?: TDuelLogResolvers<ContextType>;
 }>;
 

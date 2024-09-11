@@ -1,5 +1,5 @@
 import { loadSchemaSync } from "@graphql-tools/load";
-import { TBattleLogMapper } from "./src/dao/TBattleLogMapper";
+import { TDuelLogMapper } from "./src/dao/TDuelLogMapper";
 import { startStandaloneServer } from "@apollo/server/standalone";
 
 import { join } from "path";
@@ -14,23 +14,23 @@ const schema = loadSchemaSync(join(__dirname, "./schema.graphql"), {
 
 const resolvers: Resolvers = {
   Query: {
-    battleLogs() {
-      return TBattleLogMapper.selectAll();
+    getDuelLogs() {
+      return TDuelLogMapper.selectAll();
     },
-    battleLog(parent, args, context) {
-      return TBattleLogMapper.selectByPK(args.logId);
+    getDuelLog(parent, args, context) {
+      return TDuelLogMapper.selectByPK(args.logId);
     },
   },
 
   Mutation: {
-    insertBattleLog(parent, args, context) {
-      return TBattleLogMapper.insert(args.input);
+    insertDuelLog(parent, args, context) {
+      return TDuelLogMapper.insert(args.input);
     },
-    updateBattleLog(parent, args, context) {
-      return TBattleLogMapper.update(args.input);
+    updateDuelLog(parent, args, context) {
+      return TDuelLogMapper.update(args.input);
     },
-    deleteBattleLog(parent, args, context) {
-      return TBattleLogMapper.delete(args.logId);
+    deleteDuelLog(parent, args, context) {
+      return TDuelLogMapper.delete(args.logId);
     },
   },
 };
