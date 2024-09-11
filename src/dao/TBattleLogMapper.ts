@@ -1,6 +1,6 @@
 import Database from "better-sqlite3";
 import { DB_FILE_DIR } from "../util/dbConfig";
-import { TBattleLog } from "./model";
+import { TBattleLog } from "../types/generated/graphql";
 
 const db = new Database(DB_FILE_DIR);
 

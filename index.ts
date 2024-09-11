@@ -1,91 +1,50 @@
-import { TBattleLog } from "./src/dao/model";
+import { loadSchemaSync } from "@graphql-tools/load";
 import { TBattleLogMapper } from "./src/dao/TBattleLogMapper";
+import { startStandaloneServer } from "@apollo/server/standalone";
 
-var express = require("express");
-var { buildSchema } = require("graphql");
-import { graphqlHTTP } from "express-graphql";
+import { join } from "path";
+import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
+import { addResolversToSchema } from "@graphql-tools/schema";
+import { ApolloServer } from "@apollo/server";
+import { Resolvers } from "./src/types/generated/graphql";
 
-var { ruruHTML } = require("ruru/server");
-const cors = require("cors");
+const schema = loadSchemaSync(join(__dirname, "./schema.graphql"), {
+  loaders: [new GraphQLFileLoader()],
+});
 
-// Construct a schema, using GraphQL schema language
-var schema = buildSchema(`
-  type Query {
-    hello: String
-    battleLog (logId: Int!): TBattleLog
-    battleLogs: [TBattleLog]
-  }
-
-  type Mutation {
-    insertBattleLog(input: TBattleLogInput!): TBattleLog
-    updateBattleLog(input: TBattleLogInput!): TBattleLog
-    deleteBattleLog(logId: Int!): Int
-  }
-
-  type TBattleLog {
-  logId: Int
-  battleDate: String
-  season: String
-  myDeck: Int
-  oppositeDeck: Int
-  coinToss: String
-  winLose: String
-  rank: Int
-}
-
-  input TBattleLogInput {
-  logId: Int
-  battleDate: String
-  season: String
-  myDeck: Int
-  oppositeDeck: Int
-  coinToss: String
-  winLose: String
-  rank: Int
-}
-`);
-
-// The root provides a resolver function for each API endpoint
-var root = {
-  hello() {
-    return "Hello world!";
+const resolvers: Resolvers = {
+  Query: {
+    battleLogs() {
+      return TBattleLogMapper.selectAll();
+    },
+    battleLog(parent, args, context) {
+      return TBattleLogMapper.selectByPK(args.logId);
+    },
   },
-  battleLogs() {
-    return TBattleLogMapper.selectAll();
-  },
-  battleLog({ logId }: { logId: number }) {
-    return TBattleLogMapper.selectByPK(logId);
-  },
-  insertBattleLog({ input }: { input: TBattleLog }) {
-    return TBattleLogMapper.insert(input);
-  },
-  updateBattleLog({ input }: { input: TBattleLog }) {
-    return TBattleLogMapper.update(input);
-  },
-  deleteBattleLog({ logId }: { logId: number }) {
-    return TBattleLogMapper.delete(logId);
+
+  Mutation: {
+    insertBattleLog(parent, args, context) {
+      return TBattleLogMapper.insert(args.input);
+    },
+    updateBattleLog(parent, args, context) {
+      return TBattleLogMapper.update(args.input);
+    },
+    deleteBattleLog(parent, args, context) {
+      return TBattleLogMapper.delete(args.logId);
+    },
   },
 };
 
-var app = express();
-
-app.use(cors());
-
-app.use(
-  "/graphql",
-  graphqlHTTP({
-    schema: schema,
-    rootValue: root,
-    graphiql: true,
-  })
-);
-
-// Start the server at port
-app.listen(4000);
-console.log("Running a GraphQL API server at http://localhost:4000/graphql");
-
-// Serve the GraphiQL IDE.
-app.get("/", (_req: any, res: any) => {
-  res.type("html");
-  res.end(ruruHTML({ endpoint: "/graphql" }));
+const schemaWithResolvers = addResolversToSchema({ schema, resolvers });
+const server = new ApolloServer({
+  schema: schemaWithResolvers,
 });
+
+const startServer = async () => {
+  const { url } = await startStandaloneServer(server, {
+    listen: { port: 4000 },
+  });
+  console.log(`🚀  Server ready at: ${url}`);
+};
+
+startServer();

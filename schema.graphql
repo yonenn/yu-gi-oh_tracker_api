@@ -5,6 +5,8 @@ type Query {
 
 type Mutation {
   insertBattleLog(input: TBattleLogInput!): TBattleLog
+  updateBattleLog(input: TBattleLogInput!): TBattleLog
+  deleteBattleLog(logId: Int!): Int
 }
 
 type TBattleLog {
