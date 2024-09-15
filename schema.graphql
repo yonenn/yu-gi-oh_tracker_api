@@ -1,12 +1,19 @@
 type Query {
   getDuelLog(logId: Int!): TDuelLog
   getDuelLogs: [TDuelLog]
+
+  getRank(rankId: Int!): MRank
+  getRanks: [MRank]
 }
 
 type Mutation {
   insertDuelLog(input: TDuelLogInput!): TDuelLog
   updateDuelLog(input: TDuelLogInput!): TDuelLog
   deleteDuelLog(logId: Int!): Int
+
+  insertRank(input: MRankInput!): MRank
+  updateRank(input: MRankInput!): MRank
+  deleteRank(rankId: Int!): Int
 }
 
 type TDuelLog {
@@ -19,7 +26,6 @@ type TDuelLog {
   winLose: String
   rank: Int
 }
-
 input TDuelLogInput {
   logId: Int
   battleDate: String
@@ -29,4 +35,35 @@ input TDuelLogInput {
   coinToss: String
   winLose: String
   rank: Int
+}
+
+type MRank {
+  rankId: Int
+  rankName: String
+  tier: Int
+}
+input MRankInput {
+  rankId: Int
+  rankName: String
+  tier: Int
+}
+
+type TMyDeck {
+  myDeckId: Int
+  deckName: String
+  memo: String
+}
+input TMyDeckInput {
+  myDeckId: Int
+  deckName: String
+  memo: String
+}
+
+type TTheme {
+  themeId: Int
+  themeName: String
+}
+input TThemeInput {
+  themeId: Int
+  themeName: String
 }

@@ -1,6 +1,6 @@
 import Database from "better-sqlite3";
 import { DB_FILE_DIR } from "../util/dbConfig";
-import { MRank } from "./model";
+import { MRank } from "../types/generated/graphql";
 
 const db = new Database(DB_FILE_DIR);
 
@@ -51,9 +51,7 @@ export const MRankMapper = {
 
   /** レコードを削除 */
   delete: (id: number): number => {
-    const result = db
-      .prepare("delete from T_BATTLE_LOG where LOG_ID = ?")
-      .run(id);
+    const result = db.prepare("delete from M_RANK where RANK_ID = ?").run(id);
     return result.changes;
   },
 };

@@ -17,11 +17,27 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type MRank = {
+  __typename?: 'MRank';
+  rankId?: Maybe<Scalars['Int']['output']>;
+  rankName?: Maybe<Scalars['String']['output']>;
+  tier?: Maybe<Scalars['Int']['output']>;
+};
+
+export type MRankInput = {
+  rankId?: InputMaybe<Scalars['Int']['input']>;
+  rankName?: InputMaybe<Scalars['String']['input']>;
+  tier?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   deleteDuelLog?: Maybe<Scalars['Int']['output']>;
+  deleteRank?: Maybe<Scalars['Int']['output']>;
   insertDuelLog?: Maybe<TDuelLog>;
+  insertRank?: Maybe<MRank>;
   updateDuelLog?: Maybe<TDuelLog>;
+  updateRank?: Maybe<MRank>;
 };
 
 
@@ -30,8 +46,18 @@ export type MutationDeleteDuelLogArgs = {
 };
 
 
+export type MutationDeleteRankArgs = {
+  rankId: Scalars['Int']['input'];
+};
+
+
 export type MutationInsertDuelLogArgs = {
   input: TDuelLogInput;
+};
+
+
+export type MutationInsertRankArgs = {
+  input: MRankInput;
 };
 
 
@@ -39,15 +65,27 @@ export type MutationUpdateDuelLogArgs = {
   input: TDuelLogInput;
 };
 
+
+export type MutationUpdateRankArgs = {
+  input: MRankInput;
+};
+
 export type Query = {
   __typename?: 'Query';
   getDuelLog?: Maybe<TDuelLog>;
   getDuelLogs?: Maybe<Array<Maybe<TDuelLog>>>;
+  getRank?: Maybe<MRank>;
+  getRanks?: Maybe<Array<Maybe<MRank>>>;
 };
 
 
 export type QueryGetDuelLogArgs = {
   logId: Scalars['Int']['input'];
+};
+
+
+export type QueryGetRankArgs = {
+  rankId: Scalars['Int']['input'];
 };
 
 export type TDuelLog = {
@@ -71,6 +109,30 @@ export type TDuelLogInput = {
   rank?: InputMaybe<Scalars['Int']['input']>;
   season?: InputMaybe<Scalars['String']['input']>;
   winLose?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type TMyDeck = {
+  __typename?: 'TMyDeck';
+  deckName?: Maybe<Scalars['String']['output']>;
+  memo?: Maybe<Scalars['String']['output']>;
+  myDeckId?: Maybe<Scalars['Int']['output']>;
+};
+
+export type TMyDeckInput = {
+  deckName?: InputMaybe<Scalars['String']['input']>;
+  memo?: InputMaybe<Scalars['String']['input']>;
+  myDeckId?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type TTheme = {
+  __typename?: 'TTheme';
+  themeId?: Maybe<Scalars['Int']['output']>;
+  themeName?: Maybe<Scalars['String']['output']>;
+};
+
+export type TThemeInput = {
+  themeId?: InputMaybe<Scalars['Int']['input']>;
+  themeName?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -147,33 +209,57 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  MRank: ResolverTypeWrapper<MRank>;
+  MRankInput: MRankInput;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   TDuelLog: ResolverTypeWrapper<TDuelLog>;
   TDuelLogInput: TDuelLogInput;
+  TMyDeck: ResolverTypeWrapper<TMyDeck>;
+  TMyDeckInput: TMyDeckInput;
+  TTheme: ResolverTypeWrapper<TTheme>;
+  TThemeInput: TThemeInput;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean']['output'];
   Int: Scalars['Int']['output'];
+  MRank: MRank;
+  MRankInput: MRankInput;
   Mutation: {};
   Query: {};
   String: Scalars['String']['output'];
   TDuelLog: TDuelLog;
   TDuelLogInput: TDuelLogInput;
+  TMyDeck: TMyDeck;
+  TMyDeckInput: TMyDeckInput;
+  TTheme: TTheme;
+  TThemeInput: TThemeInput;
+}>;
+
+export type MRankResolvers<ContextType = Context, ParentType extends ResolversParentTypes['MRank'] = ResolversParentTypes['MRank']> = ResolversObject<{
+  rankId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  rankName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  tier?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
   deleteDuelLog?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationDeleteDuelLogArgs, 'logId'>>;
+  deleteRank?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationDeleteRankArgs, 'rankId'>>;
   insertDuelLog?: Resolver<Maybe<ResolversTypes['TDuelLog']>, ParentType, ContextType, RequireFields<MutationInsertDuelLogArgs, 'input'>>;
+  insertRank?: Resolver<Maybe<ResolversTypes['MRank']>, ParentType, ContextType, RequireFields<MutationInsertRankArgs, 'input'>>;
   updateDuelLog?: Resolver<Maybe<ResolversTypes['TDuelLog']>, ParentType, ContextType, RequireFields<MutationUpdateDuelLogArgs, 'input'>>;
+  updateRank?: Resolver<Maybe<ResolversTypes['MRank']>, ParentType, ContextType, RequireFields<MutationUpdateRankArgs, 'input'>>;
 }>;
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   getDuelLog?: Resolver<Maybe<ResolversTypes['TDuelLog']>, ParentType, ContextType, RequireFields<QueryGetDuelLogArgs, 'logId'>>;
   getDuelLogs?: Resolver<Maybe<Array<Maybe<ResolversTypes['TDuelLog']>>>, ParentType, ContextType>;
+  getRank?: Resolver<Maybe<ResolversTypes['MRank']>, ParentType, ContextType, RequireFields<QueryGetRankArgs, 'rankId'>>;
+  getRanks?: Resolver<Maybe<Array<Maybe<ResolversTypes['MRank']>>>, ParentType, ContextType>;
 }>;
 
 export type TDuelLogResolvers<ContextType = Context, ParentType extends ResolversParentTypes['TDuelLog'] = ResolversParentTypes['TDuelLog']> = ResolversObject<{
@@ -188,9 +274,25 @@ export type TDuelLogResolvers<ContextType = Context, ParentType extends Resolver
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type TMyDeckResolvers<ContextType = Context, ParentType extends ResolversParentTypes['TMyDeck'] = ResolversParentTypes['TMyDeck']> = ResolversObject<{
+  deckName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  memo?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  myDeckId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type TThemeResolvers<ContextType = Context, ParentType extends ResolversParentTypes['TTheme'] = ResolversParentTypes['TTheme']> = ResolversObject<{
+  themeId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  themeName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type Resolvers<ContextType = Context> = ResolversObject<{
+  MRank?: MRankResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   TDuelLog?: TDuelLogResolvers<ContextType>;
+  TMyDeck?: TMyDeckResolvers<ContextType>;
+  TTheme?: TThemeResolvers<ContextType>;
 }>;
 
