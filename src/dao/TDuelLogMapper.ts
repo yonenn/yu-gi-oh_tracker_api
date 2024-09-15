@@ -1,13 +1,12 @@
-import Database from "better-sqlite3";
-import { DB_FILE_DIR } from "../util/dbConfig";
 import { TDuelLog } from "../types/generated/graphql";
+import { injectable } from "inversify";
+import { ConnectedDB } from "./ConnectedDB";
 
-const db = new Database(DB_FILE_DIR);
-
-export const TDuelLogMapper = {
+@injectable()
+export class TDuelLogMapper {
   /** 全件取得 */
-  selectAll: (): TDuelLog[] => {
-    const result = db.prepare("select * from T_DUEL_LOG").all();
+  selectAll(): TDuelLog[] {
+    const result = ConnectedDB.db.prepare("select * from T_DUEL_LOG").all();
 
     return result.map((row: any) => {
       return {
@@ -21,11 +20,11 @@ export const TDuelLogMapper = {
         rank: row.RANK,
       };
     });
-  },
+  }
 
   /** レコード取得 */
-  selectByPK: (id: number): TDuelLog => {
-    const result: any = db
+  selectByPK(id: number): TDuelLog {
+    const result: any = ConnectedDB.db
       .prepare("select * from T_DUEL_LOG where LOG_ID = ?")
       .get(id);
 
@@ -41,11 +40,11 @@ export const TDuelLogMapper = {
     };
 
     return response;
-  },
+  }
 
   /** レコード追加 */
-  insert: (input: TDuelLog): TDuelLog => {
-    const result = db
+  insert(input: TDuelLog): TDuelLog {
+    const result = ConnectedDB.db
       .prepare("insert into T_DUEL_LOG values(?, ?, ?, ?, ?, ?, ?, ?)")
       .run(
         null,
@@ -58,11 +57,11 @@ export const TDuelLogMapper = {
         input.rank
       );
     return { ...input, logId: result.lastInsertRowid as number };
-  },
+  }
 
   /** レコード更新 */
-  update: (input: TDuelLog): TDuelLog => {
-    const result = db
+  update(input: TDuelLog): TDuelLog {
+    const result = ConnectedDB.db
       .prepare(
         "update T_DUEL_LOG set BATTLE_DATE = ?, SEASON = ?, MY_DECK = ?, OPPOSITE_DECK = ?, COIN_TOSS = ?, WIN_LOSE = ?, RANK = ?  where LOG_ID = ?"
       )
@@ -77,13 +76,13 @@ export const TDuelLogMapper = {
         input.logId
       );
     return { ...input };
-  },
+  }
 
   /** レコードを削除 */
-  delete: (id: number): number => {
-    const result = db
+  delete(id: number): number {
+    const result = ConnectedDB.db
       .prepare("delete from T_DUEL_LOG where LOG_ID = ?")
       .run(id);
     return result.changes;
-  },
-};
+  }
+}

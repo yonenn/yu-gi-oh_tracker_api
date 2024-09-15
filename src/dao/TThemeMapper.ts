@@ -1,13 +1,12 @@
-import Database from "better-sqlite3";
-import { DB_FILE_DIR } from "../util/dbConfig";
 import { TTheme } from "../types/generated/graphql";
+import { injectable } from "inversify";
+import { ConnectedDB } from "./ConnectedDB";
 
-const db = new Database(DB_FILE_DIR);
-
-export const TThemeMapper = {
+@injectable()
+export class TThemeMapper {
   /** 全件取得 */
-  selectAll: (): TTheme[] => {
-    const result = db.prepare("select * from T_THEME").all();
+  selectAll(): TTheme[] {
+    const result = ConnectedDB.db.prepare("select * from T_THEME").all();
 
     return result.map((row: any) => {
       return {
@@ -15,11 +14,11 @@ export const TThemeMapper = {
         themeName: row.THEME_NAME,
       };
     });
-  },
+  }
 
   /** レコード取得 */
-  selectByPK: (id: number): TTheme => {
-    const result: any = db
+  selectByPK(id: number): TTheme {
+    const result: any = ConnectedDB.db
       .prepare("select * from T_THEME where THEME_ID = ?")
       .get(id);
 
@@ -29,27 +28,29 @@ export const TThemeMapper = {
     };
 
     return response;
-  },
+  }
 
   /** レコード追加 */
-  insert: (input: TTheme): TTheme => {
-    const result = db
+  insert(input: TTheme): TTheme {
+    const result = ConnectedDB.db
       .prepare("insert into T_THEME values(?, ?)")
-      .run(null, input.themeId, input.themeName);
+      .run(null, input.themeName);
     return { ...input, themeId: result.lastInsertRowid as number };
-  },
+  }
 
   /** レコード更新 */
-  update: (input: TTheme): TTheme => {
-    const result = db
+  update(input: TTheme): TTheme {
+    const result = ConnectedDB.db
       .prepare("update T_THEME set THEME_NAME = ? where THEME_ID = ?")
       .run(input.themeName, input.themeId);
     return { ...input };
-  },
+  }
 
   /** レコードを削除 */
-  delete: (id: number): number => {
-    const result = db.prepare("delete from T_THEME where THEME_ID = ?").run(id);
+  delete(id: number): number {
+    const result = ConnectedDB.db
+      .prepare("delete from T_THEME where THEME_ID = ?")
+      .run(id);
     return result.changes;
-  },
-};
+  }
+}

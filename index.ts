@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { loadSchemaSync } from "@graphql-tools/load";
 import { TDuelLogMapper } from "./src/dao/TDuelLogMapper";
 import { startStandaloneServer } from "@apollo/server/standalone";
@@ -7,6 +8,11 @@ import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
 import { addResolversToSchema } from "@graphql-tools/schema";
 import { ApolloServer } from "@apollo/server";
 import { Resolvers } from "./src/types/generated/graphql";
+import { MRankMapper } from "./src/dao/MRankMapper";
+import { container } from "./inversify.config";
+
+const mRankMapper = container.get(MRankMapper);
+const tDuelLogMapper = container.get(TDuelLogMapper);
 
 const schema = loadSchemaSync(join(__dirname, "./schema.graphql"), {
   loaders: [new GraphQLFileLoader()],
@@ -15,22 +21,22 @@ const schema = loadSchemaSync(join(__dirname, "./schema.graphql"), {
 const resolvers: Resolvers = {
   Query: {
     getDuelLogs() {
-      return TDuelLogMapper.selectAll();
+      return tDuelLogMapper.selectAll();
     },
     getDuelLog(parent, args, context) {
-      return TDuelLogMapper.selectByPK(args.logId);
+      return tDuelLogMapper.selectByPK(args.logId);
     },
   },
 
   Mutation: {
     insertDuelLog(parent, args, context) {
-      return TDuelLogMapper.insert(args.input);
+      return tDuelLogMapper.insert(args.input);
     },
     updateDuelLog(parent, args, context) {
-      return TDuelLogMapper.update(args.input);
+      return tDuelLogMapper.update(args.input);
     },
     deleteDuelLog(parent, args, context) {
-      return TDuelLogMapper.delete(args.logId);
+      return tDuelLogMapper.delete(args.logId);
     },
   },
 };
